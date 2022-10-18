@@ -1,0 +1,18 @@
+<%- include ('./partials/header') %> 
+    <div class="container mt-4">
+      <h3>Click <a href="#" onclick="copyLink(`https://${location.hostname}/<%= currentUser.username %>/message`)">here</a> to copy your link then send to your friends.
+      </h3>
+      <% user.messages.slice().reverse().forEach((message) => { %>
+        <div class="mt-2 p-2 bg-dark text-white rounded">
+          <h5><span class="m-2 badge bg-light text-dark"><%= message.created.toLocaleString() %></span></h5>
+          <p class="m-2"><%= message.message %></p>
+        </div>
+      <% }) %>
+    </div>
+    <script>
+      async function copyLink(argument) {
+        await navigator.clipboard.writeText(`Click this link to send me an anonymous message ${argument}. I won't know who sent it 😎.`);
+        alert('Link copied to clipboard.');
+      }
+    </script>
+<%- include ('./partials/footer') %> 

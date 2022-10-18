@@ -1,0 +1,11 @@
+<%- include ('./partials/header') %>
+        <div class="form-center">
+            <div class="container mt-4">
+                <h4 class="text-center">Send an anonymous message to <%= user.username %></h4>
+                <form method="post" action="/<%= user.username %>/message">
+                    <textarea class="form-control" placeholder="Enter message. Don't lie!" rows="5" name="message[message]" required></textarea><br>
+                    <input class="btn btn-primary" type="submit" name="submit">
+                </form>
+            </div>
+        </div>
+<%- include ('./partials/footer') %>

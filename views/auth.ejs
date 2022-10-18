@@ -1,0 +1,13 @@
+<%- include ('./partials/header') %>
+	<% if (!currentUser) { %>
+		<script>
+			location.replace('/login');
+		</script>
+	<% } else { %>
+		<script>
+			setTimeout(() => {
+				location.replace('/<%= currentUser.username %>');
+			}, 1000);
+		</script>
+	<% } %>
+<%- include ('./partials/footer') %> 
