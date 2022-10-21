@@ -47,6 +47,11 @@ app.get('/', isAuthorized, (req, res) => {
     res.render('index');
 });
 
+// contact
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
+
 // register routes
 app.get('/register', (req, res) => {
     res.render('register');
@@ -61,7 +66,7 @@ app.post('/register', isAuthorized, (req, res) => {
         }
         passport.authenticate('local')(req, res, () => {
             req.flash('success', `Hello ${user.username}. Welcome to Anonimaze`);
-            res.redirect('/authenticate');
+            res.redirect('/auth');
         });
     });
 });
@@ -73,12 +78,12 @@ app.get('/login', isAuthorized, (req, res) => {
 
 app.post('/login', passport.authenticate('local',
     {
-       successRedirect : '/authenticate',
+       successRedirect : '/auth',
        failureRedirect : '/login', 
     })
 );
 
-app.get('/authenticate', (req, res) => {
+app.get('/auth', (req, res) => {
     res.render('auth');
 });
 
@@ -91,7 +96,7 @@ app.get('/logout', (req, res) => {
 });
 
 // login route
-app.get('/:user', isLoggedIn, (req, res) => {
+app.get('/profile/:user', isLoggedIn, (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
             res.render('error');
