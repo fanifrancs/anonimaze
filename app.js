@@ -145,7 +145,7 @@ function isLoggedIn(req, res, next) {
 
 function isAuthorized(req, res, next) {
     if (req.isAuthenticated()) {
-        return res.redirect('/' + req.user.username);
+        return res.redirect('/profile/' + req.user.username);
     }; next();
 }
 
