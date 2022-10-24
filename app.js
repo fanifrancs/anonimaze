@@ -10,9 +10,9 @@ app            = express();
 
 require('dotenv').config();
 
-function connectDB() {
+async function connectDB() {
     try {
-        mongoose.connect(process.env.db_URI);
+        await mongoose.connect(process.env.db_URI);
         console.log('connected to DB');
     } catch { 
         err => console.log(err, 'DB connection went wrong');
