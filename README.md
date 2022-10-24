@@ -1,2 +1,2 @@
 # anonimaze
-Send and receive anonymous messages.
+Send and receive anonymous messages and compliments.
