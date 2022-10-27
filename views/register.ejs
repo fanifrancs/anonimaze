@@ -4,7 +4,7 @@
         <h2 class="text-center">Register</h2>
         <form method="post" action="/register">
           <input class="form-control" placeholder="username" 
-            oninput="value = value.toLowerCase()" 
+            oninput="value = value.toLowerCase().trim()" 
             type="text" name="username" required
           ><br>
           <input id="p1" class="form-control" minlength="6" placeholder="password" type="password" name="password" required><br>
