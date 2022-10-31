@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 *{
 	/* font-family: 'Comic Neue', cursive; */
@@ -36,4 +37,9 @@ i{
 
 .pointer{
 	cursor: pointer;
+}
+
+.pacifico{
+	font-family: 'Pacifico', cursive;
+	color: gray;
 }
