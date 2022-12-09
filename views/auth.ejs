@@ -6,7 +6,7 @@
 	<% } else { %>
 		<script>
 			setTimeout(() => {
-				location.replace('/profile/<%= currentUser.username %>');
+				location.replace('/messages/<%= currentUser.username %>');
 			}, 1000);
 		</script>
 	<% } %>

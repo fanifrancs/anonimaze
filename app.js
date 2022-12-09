@@ -14,7 +14,7 @@ async function connectDB() {
     try {
         await mongoose.connect(process.env.db_URI);
         console.log('connected to DB');
-    } catch { 
+    } catch {
         err => console.log(err, 'DB connection went wrong');
     }
 }
@@ -53,7 +53,7 @@ app.get('/contact', (req, res) => {
 });
 
 // register routes
-app.get('/register', (req, res) => {
+app.get('/register', isAuthorized, (req, res) => {
     res.render('register');
 });
 
@@ -79,9 +79,14 @@ app.get('/login', isAuthorized, (req, res) => {
 app.post('/login', passport.authenticate('local',
     {
        successRedirect : '/auth',
-       failureRedirect : '/login', 
+       failureRedirect : '/loginerr', 
     })
 );
+
+app.get('/loginerr', isAuthorized, (req, res) => {
+    req.flash('error', 'Wrong username or password');
+    res.redirect('login');
+});
 
 app.get('/auth', (req, res) => {
     res.render('auth');
@@ -95,8 +100,8 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// login route
-app.get('/profile/:user', isLoggedIn, (req, res) => {
+// dashboard route
+app.get('/messages/:user', isLoggedIn, (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
             res.render('error');
@@ -107,7 +112,7 @@ app.get('/profile/:user', isLoggedIn, (req, res) => {
 });
 
 // message routes
-app.get('/:user/message', isAuthorized, (req, res) => {
+app.get('/:user/message', (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
             res.render('error');
@@ -117,7 +122,7 @@ app.get('/:user/message', isAuthorized, (req, res) => {
     })
 });
 
-app.post('/:user/message', isAuthorized, (req, res) => {
+app.post('/:user/message', (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
             res.render('error');
@@ -139,13 +144,13 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     };
-    req.flash('error', 'please login first');
+    req.flash('error', 'Please login first');
     res.redirect('/login');
 }
 
 function isAuthorized(req, res, next) {
     if (req.isAuthenticated()) {
-        return res.redirect('/profile/' + req.user.username);
+        return res.redirect('/messages/' + req.user.username);
     }; next();
 }
 

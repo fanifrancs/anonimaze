@@ -3,8 +3,8 @@
       <div class="container mt-4">
         <h2 class="text-center">Register</h2>
         <form method="post" action="/register">
-          <input class="form-control" placeholder="username" 
-            oninput="value = value.toLowerCase().trim()" 
+          <input id="username" class="form-control" placeholder="username" 
+            oninput="value = value.toLowerCase().trim().replace(/(\W|_)/g, '')"
             type="text" name="username" required
           ><br>
           <input id="p1" class="form-control" minlength="6" placeholder="password" type="password" name="password" required><br>
@@ -17,9 +17,9 @@
     <script>
       let message = document.querySelector('#message');
       document.addEventListener('submit', (e) => {
-        let p1 = document.querySelector('#p1').value;
-        let p2 = document.querySelector('#p2').value;
-        if (p1 !== p2) {
+        let p1 = document.querySelector('#p1').value,
+        p2 = document.querySelector('#p2').value;
+        if (p1 !== p2 ) {
           e.preventDefault();
           message.innerText = 'Passwords do not match';
           message.style.display = 'block';
