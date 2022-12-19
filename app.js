@@ -4,18 +4,18 @@ mongoose       = require('mongoose'),
 passport       = require('passport'),
 flash          = require('connect-flash'),
 LocalStrategy  = require('passport-local'),
-Message        = require('./models/message'),
 User           = require('./models/user'),
+dotenv         = require('dotenv'),
 app            = express();
 
-require('dotenv').config();
+dotenv.config();
 
-async function connectDB() {
+function connectDB() {
     try {
-        await mongoose.connect(process.env.db_URI);
+        mongoose.connect(process.env.db_URI);
         console.log('connected to DB');
-    } catch {
-        err => console.log(err, 'DB connection went wrong');
+    } catch(err) {
+        console.log(err, 'DB connection went wrong');
     }
 }
 
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     next();
 })
 
-// root route
+// root
 app.get('/', isAuthorized, (req, res) => {
     res.render('index');
 });
@@ -52,7 +52,7 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 });
 
-// register routes
+// register
 app.get('/register', isAuthorized, (req, res) => {
     res.render('register');
 });
@@ -71,7 +71,7 @@ app.post('/register', isAuthorized, (req, res) => {
     });
 });
 
-// login routes
+// login
 app.get('/login', isAuthorized, (req, res) => {
     res.render('login');
 });
@@ -92,7 +92,7 @@ app.get('/auth', (req, res) => {
     res.render('auth');
 });
 
-// logout route
+// logout
 app.get('/logout', (req, res) => {
     req.logout(() => {
         req.flash('success', 'You logged out');
@@ -100,7 +100,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// dashboard route
+// dashboard
 app.get('/messages/:user', isLoggedIn, (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
@@ -111,7 +111,7 @@ app.get('/messages/:user', isLoggedIn, (req, res) => {
     })
 });
 
-// message routes
+// message
 app.get('/:user/message', (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
         if (err || user === null) {
@@ -137,7 +137,6 @@ app.post('/:user/message', (req, res) => {
         }
     })
 });
-// end of route handlers
 
 // middlewares
 function isLoggedIn(req, res, next) {
