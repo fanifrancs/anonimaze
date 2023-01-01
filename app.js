@@ -8,18 +8,8 @@ User           = require('./models/user'),
 dotenv         = require('dotenv'),
 app            = express();
 
-dotenv.config();
-
-function connectDB() {
-    try {
-        mongoose.connect(process.env.db_URI);
-        console.log('connected to DB');
-    } catch(err) {
-        console.log(err, 'DB connection went wrong');
-    }
-}
-
 // configs
+dotenv.config();
 app.use(express.static('public'));
 app.use(flash());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -155,6 +145,6 @@ function isAuthorized(req, res, next) {
 
 // fire up server
 app.listen(process.env.PORT || 3500, process.env.IP, () => {
-    connectDB();
+    mongoose.connect(process.env['db_URI']);
     console.log('server started || 3500');
 });
