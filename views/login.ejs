@@ -4,7 +4,7 @@
         <h2 class="text-center">Login</h2>
         <form method="post" action="/login">
           <input class="form-control" placeholder="username" 
-            oninput="value = value.toLowerCase()" type="text" 
+            oninput="value = value.toLowerCase().trim().replace(/(\W|_)/g, '')" type="text" 
             name="username" required
           ><br>
           <input id="p1" class="form-control" placeholder="password" type="password" name="password" required><br>
