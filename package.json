@@ -10,8 +10,8 @@
     "anonymous",
     "anonymous-messages"
   ],
-  "author": "Francisco",
-  "license": "ISC",
+  "author": "Francis Faniku",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.0",
     "connect-flash": "^0.1.1",

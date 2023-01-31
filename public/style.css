@@ -1,15 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
 
 *{
-	/* font-family: 'Comic Neue', cursive; */
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Comic Neue', cursive;
 }
 
-.comic-neue{
-	font-family: 'Comic Neue', cursive;
+.form-control{
+	font-size: large;
 }
 
 #logo{

@@ -8,7 +8,7 @@ User           = require('./models/user'),
 dotenv         = require('dotenv'),
 app            = express();
 
-// configs
+// server configs
 dotenv.config();
 app.use(express.static('public'));
 app.use(flash());
@@ -18,13 +18,16 @@ app.use(require('express-session')({
     secret: 'Hello World',
     resave: false,
     saveUninitialized: false
-}));
+}))
+
+// passport configs
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// local variables
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.error = req.flash('error');
@@ -32,119 +35,16 @@ app.use((req, res, next) => {
     next();
 })
 
-// root
-app.get('/', isAuthorized, (req, res) => {
-    res.render('index');
-});
-
-// contact
-app.get('/contact', (req, res) => {
-    res.render('contact');
-});
-
-// register
-app.get('/register', isAuthorized, (req, res) => {
-    res.render('register');
-});
-
-app.post('/register', isAuthorized, (req, res) => {
-    const newUser = new User({username : req.body.username});
-    User.register(newUser, req.body.password, (err, user) => {
-        if (err) {
-            req.flash('error', err.message);
-            return res.redirect('/register');
-        }
-        passport.authenticate('local')(req, res, () => {
-            req.flash('success', `Hello ${user.username}. Welcome to Anonimaze`);
-            res.redirect('/auth');
-        });
-    });
-});
-
-// login
-app.get('/login', isAuthorized, (req, res) => {
-    res.render('login');
-});
-
-app.post('/login', passport.authenticate('local',
-    {
-       successRedirect : '/auth',
-       failureRedirect : '/loginerr', 
-    })
-);
-
-app.get('/loginerr', isAuthorized, (req, res) => {
-    req.flash('error', 'Wrong username or password');
-    res.redirect('login');
-});
-
-app.get('/auth', (req, res) => {
-    res.render('auth');
-});
-
-// logout
-app.get('/logout', (req, res) => {
-    req.logout(() => {
-        req.flash('success', 'You logged out');
-        res.redirect('/login');
-    });
-});
-
-// dashboard
-app.get('/messages/:user', isLoggedIn, (req, res) => {
-    User.findOne({username: req.params.user}, (err, user) => {
-        if (err || user === null) {
-            res.render('error');
-        } else {
-            res.render('show', {user: user});
-        }
-    })
-});
-
-// message
-app.get('/:user/message', (req, res) => {
-    User.findOne({username: req.params.user}, (err, user) => {
-        if (err || user === null) {
-            res.render('error');
-        } else {
-            res.render('send', {user: user});
-        }
-    })
-});
-
-app.post('/:user/message', (req, res) => {
-    User.findOne({username: req.params.user}, (err, user) => {
-        if (err || user === null) {
-            res.render('error');
-        } else {
-            user.messages.push(req.body.message);
-            user.save((err, user) => {
-                if (err) {
-                    return res.render('error');
-                }
-            });
-            res.render('sent');
-        }
-    })
-});
-
-// middlewares
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    };
-    req.flash('error', 'Please login first');
-    res.redirect('/login');
-}
-
-function isAuthorized(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect('/messages/' + req.user.username);
-    }; next();
-}
+// routes
+app.use(require('./routes/index'));
+app.use(require('./routes/register'));
+app.use(require('./routes/login'));
+app.use(require('./routes/message'));
+app.use(require('./routes/logout'));
+app.use(require('./routes/contact'));
 
 // fire up server
 app.listen(process.env.PORT || 3500, process.env.IP, () => {
     mongoose.connect(process.env['db_URI']);
-    console.log('server started || 3500');
-});
+    console.log('server started at 3500');
+})

@@ -1,5 +1,9 @@
-<%- include ('./partials/header') %> 
-    <div class="container mt-4">
-      <h2>Message sent! Now it's your turn. <a href="/register">Sign up</a> and start receiving anonymous compliments.</h2>
-    </div>
+<%- include ('./partials/header') %>
+      <div class="container mt-4">
+        <% if (!currentUser) { %>
+          <h2>Message sent! Now it's your turn. <a href="/register">Sign up</a> and start receiving anonymous compliments.</h2>
+        <% } else { %>
+          <h2>Message sent! <a href="/messages/<%= currentUser.username %>">Click here</a> to return to your dashboard.</h2>
+        <% } %>
+      </div>
 <%- include ('./partials/footer') %> 
