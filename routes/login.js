@@ -7,7 +7,7 @@ router.get('/login', middlewares.isAuthorized, (req, res) => {
     res.render('login');
 })
 
-router.post('/login', passport.authenticate('local',
+router.post('/login', middlewares.isLoggedIn, passport.authenticate('local',
     {
        successRedirect : '/auth',
        failureRedirect : '/loginerr', 
