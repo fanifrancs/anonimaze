@@ -7,16 +7,16 @@ router.get('/login', middlewares.isAuthorized, (req, res) => {
     res.render('login');
 })
 
-router.post('/login', middlewares.isLoggedIn, passport.authenticate('local',
+router.post('/login', middlewares.isAuthorized, passport.authenticate('local',
     {
        successRedirect : '/auth',
-       failureRedirect : '/loginerr', 
+       failureRedirect : '/loginerr',
     }
 ))
 
 router.get('/loginerr', middlewares.isAuthorized, (req, res) => {
     req.flash('error', 'Invalid username or password');
-    res.redirect('login');
+    res.redirect('/login');
 })
 
 router.get('/auth', (req, res) => {
