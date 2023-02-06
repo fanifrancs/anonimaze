@@ -3,9 +3,14 @@
       <div class="container mt-4">
         <h2 class="text-center">Register</h2>
         <form method="post" action="/register">
-          <input id="username" class="form-control" placeholder="username" 
-            oninput="value = value.toLowerCase().trim().replace(/(\W|_)/g, '')"
-            type="text" name="username" required
+          <input 
+            id="username"
+            class="form-control"
+            minlength="3"
+            placeholder="username"
+            type="text"
+            name="username"
+            required
           ><br>
           <input id="p1" class="form-control" minlength="6" placeholder="password" type="password" name="password" required><br>
           <input id="p2" class="form-control" minlength="6" placeholder="confirm password" type="password" required><br>

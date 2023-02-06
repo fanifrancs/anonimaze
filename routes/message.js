@@ -7,7 +7,7 @@ router        = express.Router();
 router.get('/messages/:user', middlewares.isLoggedIn, (req, res) => {
     if (req.user.username === req.params.user) {
         User.findOne({username: req.params.user}, (err, user) => {
-            if (err || user === null) {
+            if (err) {
                 res.render('error');
             } else {
                 res.render('show', {user});

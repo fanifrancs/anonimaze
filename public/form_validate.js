@@ -1,4 +1,10 @@
+const usernameField = document.querySelector('#username');
 const message = document.querySelector('#message');
+
+usernameField.addEventListener('input', (e) => {
+    usernameField.value = e.target.value.toLowerCase().trim().replace(/(\W|_)/g, '');
+})
+
 document.addEventListener('submit', (e) => {
     const p1 = document.querySelector('#p1').value,
           p2 = document.querySelector('#p2').value;
