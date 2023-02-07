@@ -4,7 +4,7 @@ middlewares   = require('../middleware'),
 router        = express.Router();
 
 // dashboard
-router.get('/messages/:user', middlewares.isLoggedIn, (req, res) => {
+router.get('/:user/messages', middlewares.isLoggedIn, (req, res) => {
     if (req.user.username === req.params.user) {
         User.findOne({username: req.params.user}, (err, user) => {
             if (err) {
@@ -14,15 +14,17 @@ router.get('/messages/:user', middlewares.isLoggedIn, (req, res) => {
             }
         })
     } else {
-        res.redirect('/messages/' + req.user.username);
+        res.redirect('/' + req.user.username + '/messages');
     }
 })
 
 // renders message page
 router.get('/:user/message', (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
-        if (err || user === null) {
+        if (err) {
             res.render('error');
+        } else if (user === null) {
+            res.redirect('/');
         } else {
             res.render('send', {user});
         }
@@ -32,8 +34,10 @@ router.get('/:user/message', (req, res) => {
 // sends message
 router.post('/:user/message', (req, res) => {
     User.findOne({username: req.params.user}, (err, user) => {
-        if (err || user === null) {
+        if (err) {
             res.render('error');
+        } else if (user === null) {
+            res.redirect('/')
         } else {
             user.messages.push(req.body.message);
             user.save((err, user) => {

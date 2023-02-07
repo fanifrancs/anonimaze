@@ -10,7 +10,7 @@ middlewares.isLoggedIn = (req, res, next) => {
 
 middlewares.isAuthorized = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return res.redirect('/messages/' + req.user.username);
+        return res.redirect(req.user.username + '/messages');
     }; next();
 }
 
