@@ -1,5 +1,5 @@
 const express  = require('express'),
-bodyParser     = require('body-parser'),
+path           = require('path'),
 mongoose       = require('mongoose'),
 passport       = require('passport'),
 flash          = require('connect-flash'),
@@ -10,15 +10,16 @@ app            = express();
 
 // server configs
 dotenv.config();
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
-app.use(bodyParser.urlencoded({extended: true}));
-app.set('view engine', 'ejs');
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(require('express-session')({
-    secret: 'Hello World',
+    secret: process.env.session_secret,
     resave: false,
     saveUninitialized: false
 }))
+app.set('view engine', 'ejs');
 
 // passport configs
 app.use(passport.initialize());
@@ -43,8 +44,19 @@ app.use(require('./routes/message'));
 app.use(require('./routes/logout'));
 app.use(require('./routes/contact'));
 
+// mongoose
+mongoose.set('strictQuery', false);
+
+// connect db
+function connectDB() {
+    mongoose.connect(process.env['db_URI'], {
+        useNewUrlParser: true, 
+        useUnifiedTopology: true,
+    });
+}
+
 // fire up server
 app.listen(process.env.PORT || 3500, process.env.IP, () => {
-    mongoose.connect(process.env['db_URI']);
+    connectDB();
     console.log('server started at 3500');
 })
