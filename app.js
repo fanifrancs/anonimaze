@@ -5,20 +5,24 @@ passport       = require('passport'),
 flash          = require('connect-flash'),
 LocalStrategy  = require('passport-local'),
 User           = require('./models/user'),
-dotenv         = require('dotenv'),
-app            = express();
+dotenv         = require('dotenv');
+
+const
+port = 3500,
+app  = express();
 
 // server configs
 dotenv.config();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
-app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(require('express-session')({
     secret: process.env.session_secret,
     resave: false,
     saveUninitialized: false
 }))
+
+// view engine
 app.set('view engine', 'ejs');
 
 // passport configs
@@ -52,11 +56,11 @@ function connectDB() {
     mongoose.connect(process.env['db_URI'], {
         useNewUrlParser: true, 
         useUnifiedTopology: true,
-    });
+    })
 }
 
 // fire up server
-app.listen(process.env.PORT || 3500, process.env.IP, () => {
+app.listen(process.env.PORT || port, process.env.IP, () => {
     connectDB();
-    console.log('server started at 3500');
+    console.log('server started at ' + port);
 })

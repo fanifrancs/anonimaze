@@ -18,8 +18,8 @@ router.post('/register', middlewares.isAuthorized, (req, res) => {
         passport.authenticate('local')(req, res, () => {
             req.flash('success', `Hello ${req.user.username}. Welcome to Anonimaze`);
             res.redirect('/auth');
-        });
-    });
+        })
+    })
 })
 
 module.exports = router;

@@ -37,14 +37,16 @@ router.post('/:user/message', (req, res) => {
         if (err) {
             res.render('error');
         } else if (user === null) {
-            res.redirect('/')
+            res.redirect('/');
         } else {
             user.messages.push(req.body.message);
             user.save((err, user) => {
                 if (err) {
-                    return res.render('error');
+                    res.render('error');
+                } else {
+                    res.render('sent');
                 }
-            }); res.render('sent');
+            })
         }
     })
 })
