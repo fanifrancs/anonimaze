@@ -9,8 +9,9 @@ router.get('/register', middlewares.isAuthorized, (req, res) => {
 })
 
 router.post('/register', middlewares.isAuthorized, (req, res) => {
-    const newUser = new User({username : req.body.username});
-    User.register(newUser, req.body.password, (err, user) => {
+    const { username, password } = req.body;
+    const newUser = new User({username});
+    User.register(newUser, password, (err, user) => {
         if (err) {
             req.flash('error', err.message);
             return res.redirect('/register');

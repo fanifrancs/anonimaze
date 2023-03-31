@@ -15,6 +15,7 @@ app  = express();
 dotenv.config();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(require('express-session')({
     secret: process.env.session_secret,
