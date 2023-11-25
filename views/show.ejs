@@ -1,14 +1,10 @@
 <%- include ('./partials/header') %> 
     <div class="container mt-4">
       <h3>
-        <a 
-          href="#" 
-          onclick="copyLink(`https://${location.hostname}/<%= currentUser.username %>/message`)">
-          Click here</a> 
-        to copy your link then send to your friends
+        <a href="#" onclick="copyLink(`https://${location.hostname}/<%= currentUser.username %>/message`)">Click here</a> to copy your link then send to your friends
       </h3>
       <% user.messages.slice().reverse().forEach((message) => { %>
-        <div class="m-2 p-2 bg-dark text-white rounded">
+        <div class="mb-3 p-2 bg-dark text-white rounded">
           <h5><span class="m-2 badge bg-light text-dark"><%= message.created.toLocaleString() %></span></h5>
           <p class="m-2"><%= message.message %></p>
         </div>
